@@ -21,6 +21,7 @@ export default function SignInSide() {
                 if (data.status === 'ok') {
                     alert('login success');
                     localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', jsonData.username);
 
                     // Check user role and redirect accordingly
                     if (data.role === 'admin') {

@@ -13,6 +13,17 @@ const ProductTable = () => {
   const [visibleStartPage, setVisibleStartPage] = useState(0);
 
 
+  const userParams = (item) => {
+    localStorage.removeItem('userParams');
+    try {
+      localStorage.setItem('userParams', item.username);
+      console.log(item.username);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
+
 
 
   const updateVisibleStartPage = (newCurrentPage) => {
@@ -141,9 +152,9 @@ const ProductTable = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{height:'50vh'}}>
-            {visibleItems.map((item) => (
-              <tr key={item.username} className="border-b-2 flex w-full ">
+            <tbody className="text-slate-600 flex flex-col w-full overflow-y-scroll items-center justify-between" style={{ height: '50vh' }}>
+              {visibleItems.map((item) => (
+                <tr key={item.username} className="border-b-2 flex w-full ">
 
                   <td scope="col" className="px-6 py-3 w-1/6">
                     {item.username}
@@ -161,17 +172,20 @@ const ProductTable = () => {
                     {item.role}
                   </td>
                   <td scope="col" className="px-6 py-3 w-2/6 text-center">
-                  <div className="inline-flex">
+                    <div className="inline-flex">
 
-                  <Link to={`update/${item.id}`}>
-                    <button  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-                      UPDATE
-                    </button>
-                  </Link>
-                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
-                    DELETE
-                  </button>
-                </div>
+                      <Link to={{ pathname: `/admin/update` }} onClick={() => userParams(item)}>
+                        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
+                          UPDATE
+                        </button>
+                      </Link>
+
+
+
+                      <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">
+                        DELETE
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

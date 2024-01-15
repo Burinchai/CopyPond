@@ -5,10 +5,11 @@ const StudentForm = () => {
 
   useEffect(() => {
     // กำหนด URL ของ API ที่สร้างด้วย Node.js
-    const apiUrl = 'http://localhost:3333/api/user';  // ปรับ URL ตามที่คุณใช้
+    const username = localStorage.getItem('user');
+    const apiUrl = 'http://localhost:3333/api/userO?username=';  // ปรับ URL ตามที่คุณใช้
 
     // ทำ HTTP request ด้วย fetch
-    fetch(apiUrl)
+    fetch(apiUrl+username)
       .then(response => {
         if (!response.ok) {
           throw new Error('เกิดข้อผิดพลาดในการดึงข้อมูล');
@@ -49,6 +50,7 @@ const StudentForm = () => {
               name="username"
               // value={data && data[0] && data[0].username ? data[0].username : ''}
               value={userData.username}
+              readOnly
               className="mt-1 p-2 border w-full rounded-md" />
           </div>
    
@@ -61,6 +63,8 @@ const StudentForm = () => {
               type="text"
               id="fname"
               name="fname"
+              readOnly
+              value={userData.lname}
               className="mt-1 p-2 border w-full rounded-md" />
           </div>
 
