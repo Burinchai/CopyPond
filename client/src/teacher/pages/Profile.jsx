@@ -6,7 +6,7 @@ const StudentForm = () => {
   useEffect(() => {
     // กำหนด URL ของ API ที่สร้างด้วย Node.js
     const username = localStorage.getItem('user');
-    const apiUrl = 'http://localhost:3333/api/userO?username=';  // ปรับ URL ตามที่คุณใช้
+    const apiUrl = 'http://localhost:3333/api/userO?id=';  // ปรับ URL ตามที่คุณใช้
 
     // ทำ HTTP request ด้วย fetch
     fetch(apiUrl+username)

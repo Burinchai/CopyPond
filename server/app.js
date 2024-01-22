@@ -143,7 +143,28 @@ app.get('/api/user', (req, res) => {
 });
 
 // update 
-app.post
+
+
+app.patch('/api/update/:id', jsonParser, (req, res) => {
+    const { id } = req.params;
+    const { fname, lname, section, tel, birthdate, address, district, province, zipcode } = req.body;
+
+    connect.execute('UPDATE user SET fname = ?, lname = ?, section = ?, tel = ?, birthdate = ?, address = ?, district = ?, province = ?, zipcode = ? WHERE username = ?',
+        [fname, lname, section, tel, birthdate, address, district, province, zipcode, id],
+        (err, result) => {
+            if (err) {
+                console.error('Error querying MySQL:', err);
+                res.status(500).send('Internal Server Error');
+                return;
+            } else {
+                res.json(result);
+                console.log('Update successfully');
+
+            }
+        });
+})
+
+
 // app.put('/update/:id', jsonParser, (req, res, next) => {
 //     try {
 //         const id = req.params.id;
@@ -195,14 +216,14 @@ app.post
 //       res.json(results[0]); // ส่งข้อมูลเพียงหนึ่งแถวกลับไป
 //     });
 //   });
-  
+
 
 
 app.get('/api/userO', (req, res) => {
-    const { username } = req.query;
+    const { id } = req.query;
     const query = 'SELECT * FROM user WHERE username = ?';
 
-    connect.query(query, [username], (err, results) => {
+    connect.query(query, [id], (err, results) => {
         if (err) {
             console.error('Error fetching user data:', err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -223,42 +244,42 @@ app.get('/api/userO', (req, res) => {
 
 //ส่วนของกิจกรรม
 
-app.post('/activity',jsonParser, function (req, res) {
+app.post('/activity', jsonParser, function (req, res) {
     connect.query(
-      'INSERT INTO actname(`act_Name`, `start_Date`, `end_Date`) VALUES (?,?,?)',
-      [req.body.actName, req.body.startDate, req.body.endDate], // Change actId to actCode
-      function (err, results) {
-        if (err) {
-          console.error('Error inserting into database:', err);
-          res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-          res.json(results);
+        'INSERT INTO actname(`act_Name`, `start_Date`, `end_Date`) VALUES (?,?,?)',
+        [req.body.actName, req.body.startDate, req.body.endDate], // Change actId to actCode
+        function (err, results) {
+            if (err) {
+                console.error('Error inserting into database:', err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(results);
+            }
         }
-      }
     );
-  });
-  
-  app.post('/actcode',jsonParser, function (req, res) {
+});
+
+app.post('/actcode', jsonParser, function (req, res) {
     connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
-      [req.body.actCode, req.body.actName],
-      function (err, results) {
-        if (err) {
-          console.error('Error inserting into database:', err);
-          res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-          res.json(results);
+        [req.body.actCode, req.body.actName],
+        function (err, results) {
+            if (err) {
+                console.error('Error inserting into database:', err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(results);
+            }
         }
-      }
     );
-  });
-  
+});
+
 //   app.get('/check', function (req, res) {
 //     const actCodeParam = req.query.actCode;
-  
+
 //     if (!actCodeParam) {
 //       return res.status(400).json({ error: 'actCode is required in the query parameters' });
 //     }
-  
+
 //     connect.execute(
 //       'SELECT actname.*, actcode.act_Code FROM actname INNER JOIN actcode ON actname.act_Name=actcode.act_Name WHERE act_Code = ?',
 //       [actCodeParam],
@@ -268,10 +289,10 @@ app.post('/activity',jsonParser, function (req, res) {
 //           res.status(500).json({ error: 'Internal Server Error' });
 //         } else {
 //           console.log("Join activity successfully");
-  
+
 //           // เพิ่มตรวจสอบก่อนที่จะอ้างถึง 'act_Code'
 //           const DactCodeParam = resultsS[0] && resultsS[0].act_Code;
-  
+
 //           // เพิ่มการตรวจสอบว่า DactCodeParam มีค่าหรือไม่
 //           if (DactCodeParam) {
 //             connect.execute('DELETE FROM actcode WHERE act_Code = ?',
@@ -293,7 +314,7 @@ app.post('/activity',jsonParser, function (req, res) {
 //       }
 //     );
 //   });
-  
+
 
 app.listen(3333, jsonParser, function () {
     console.log('CORS-enabled web server listening on port 3333')
