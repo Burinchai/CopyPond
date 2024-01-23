@@ -47,7 +47,7 @@ function Update_user() {
       if (!input) return;
   
       if (child) {
-        const parent = list.find(((item) => item.id === dependId));
+        const parent = list.find(((item) => item.id === dependId || valuePD === item.name));
         const { [child]: childs } = parent;
         const [setChild] = setChilds;
         setChild(childs);
@@ -60,7 +60,7 @@ function Update_user() {
     return (
       <>
         <select value={selected[id] ?? valuePD} onChange={onChangeHandleLocal} className="mt-1 p-2 border w-full rounded-md">
-          <option />
+          <option label={valuePD} />
           {list &&
             list.map((item) => (
               <option

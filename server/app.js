@@ -259,6 +259,20 @@ app.post('/activity', jsonParser, function (req, res) {
     );
 });
 
+app.get('/activity', jsonParser, function (req, res) {
+    connect.query(
+        'SELECT * FROM actname', // Change actId to actCode
+        function (err, results) {
+            if (err) {
+                console.error('Error inserting into database:', err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                res.json(results);
+            }
+        }
+    );
+});
+
 app.post('/actcode', jsonParser, function (req, res) {
     connect.query('INSERT INTO actcode(`act_Code`, `act_Name`) VALUES (?,?)',
         [req.body.actCode, req.body.actName],
@@ -316,6 +330,6 @@ app.post('/actcode', jsonParser, function (req, res) {
 //   });
 
 
-app.listen(3333, jsonParser, function () {
+app.listen(3333, jsonParser,  () => {
     console.log('CORS-enabled web server listening on port 3333')
 }) 
