@@ -12,7 +12,12 @@ app.use(cors())
 // app.use(bodyParser.json());
 // app.use(express.json());
 
-
+const MYSQL_ADDON_HOST="bo1sosb3rzql6tv5o9tb-mysql.services.clever-cloud.com"
+const MYSQL_ADDON_DB="bo1sosb3rzql6tv5o9tb"
+const MYSQL_ADDON_USER="u0uetatrfmtmkl7s"
+const MYSQL_ADDON_PORT="3306"
+const MYSQL_ADDON_PASSWORD="jIUWU69id8fPOvnbaRZ9"
+const MYSQL_ADDON_URI="mysql://u0uetatrfmtmkl7s:jIUWU69id8fPOvnbaRZ9@bo1sosb3rzql6tv5o9tb-mysql.services.clever-cloud.com:3306/bo1sosb3rzql6tv5o9tb"
 
 // app.use((req, res, next) => {
 //     res.header('Access-Control-Allow-Origin', '*');
@@ -23,11 +28,14 @@ app.use(cors())
 const mysql = require('mysql2');
 // create the connection to database
 const connect = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'activitydb',
+    host: process.env.MYSQL_ADDON_HOST,
+    user: process.env.MYSQL_ADDON_USER,
+    password: process.env.MYSQL_ADDON_PASSWORD,
+    database: process.env.MYSQL_ADDON_DB,
 });
+
+
+
 
 
 
